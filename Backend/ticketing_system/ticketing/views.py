@@ -4,6 +4,7 @@ from .models import Employee, Team, Ticket
 from .serializers import EmployeeSerializer, TeamSerializer, TicketSerializer
 from rest_framework import viewsets, status
 from rest_framework.response import Response
+from .assign import assign_ticket
 
 
 class TeamViewSet(viewsets.ModelViewSet):
@@ -13,6 +14,11 @@ class TeamViewSet(viewsets.ModelViewSet):
 class TicketViewSet(viewsets.ModelViewSet):
     queryset = Ticket.objects.all()
     serializer_class = TicketSerializer
+
+    
+    def perform_create(self, serializer):
+        ticket = serializer.save()
+        assign_ticket(ticket)
 
 class EmployeeViewSet(viewsets.ModelViewSet):
     queryset = Employee.objects.all()

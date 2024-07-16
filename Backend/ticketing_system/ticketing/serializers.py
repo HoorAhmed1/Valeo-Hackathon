@@ -27,6 +27,16 @@ class EmployeeSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError("Team matching query does not exist.")
                 
 class TicketSerializer(serializers.ModelSerializer):
+    assigned_to = serializers.SerializerMethodField()
+
     class Meta:
         model = Ticket
-        fields = '__all__'
+        fields = ['id', 'title', 'description', 'priority', 'assigned_to', 'created_at', 'updated_at']
+
+    def get_assigned_to(self, obj):
+        if obj.assigned_to:
+            return {
+                'id': obj.assigned_to.id,
+                'name': obj.assigned_to.name
+            }
+        return None
