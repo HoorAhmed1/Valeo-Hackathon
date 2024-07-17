@@ -4,7 +4,7 @@ export const PageTitle = styled.h1<{ size?: 'lg' | 'md' | 'sm' }>`
     user-select: none;
     line-height: 1.25;
     font-weight: 700;
-    color:#A9A8A8;
+    color: var(--slate-500);
     font-size: ${({ size = 'sm' }) => {
         switch (size) {
             case 'lg':
