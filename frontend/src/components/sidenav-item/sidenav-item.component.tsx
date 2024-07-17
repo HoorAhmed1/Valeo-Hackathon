@@ -1,12 +1,9 @@
 import { AnimatePresence } from 'framer-motion';
 
 import {
-    ArrowBack,
-    ArrowDown,
     ItemContainer,
     MainItemContent,
-    SubItemLink,
-    SubItemsContainer,
+
 } from './sidenav-item.styles';
 
 export type SideNavItemProps = {
@@ -64,36 +61,7 @@ export default function SideNavItem({
             <MainItemContent onClick={handleClickExtendableItem}>
                 {icon}
                 {text}
-                {extendable && extended ? (
-                    <ArrowDown onClickCapture={toggleExtend} size={20} />
-                ) : (
-                    extendable && (
-                        <ArrowBack onClickCapture={toggleExtend} size={20} />
-                    )
-                )}
             </MainItemContent>
-
-            <AnimatePresence>
-                {extended && (
-                    <SubItemsContainer
-                        initial={{ height: 0, margin: 0 }}
-                        animate={{ height: '', margin: '1rem 0.5rem' }}
-                        exit={{ height: 0, margin: 0 }}
-                    >
-                        {subItems?.map((item) => {
-                            return (
-                                <SubItemLink
-                                    key={item.path}
-                                    to={item.path}
-                                    active={item.active}
-                                >
-                                    {item.icon} {item.text}
-                                </SubItemLink>
-                            );
-                        })}
-                    </SubItemsContainer>
-                )}
-            </AnimatePresence>
         </ItemContainer>
     );
 }

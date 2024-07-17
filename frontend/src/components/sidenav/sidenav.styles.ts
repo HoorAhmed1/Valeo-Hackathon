@@ -9,7 +9,7 @@ export const SideNavContainer = styled.aside<{ sideNavOpen: boolean }>`
     background-color:#FCFBFB;
     width: 250px;
     height: 100vh;
-    justify-content: center;
+    justify-content: flex-start;
     max-height: 100vh;
     display: flex;
     flex-direction: column;
@@ -31,15 +31,15 @@ export const BrandContainer = styled.div``;
 
 export const Brand = styled.h1`
     text-align: center;
-    color: #ffffff;
-    font-weight: 900;
+    color: var(--slate-600);
+    font-weight: 700;
     font-size: 2.5rem;
     position: sticky;
     top: 0;
     min-height: 0;
     padding: 0.5rem 0;
     line-height: 1.2;
-    font-family: 'Merriweather', serif;
+    font-family: 'Inter', sans-serif;
     user-select: none;
 `;
 
@@ -174,7 +174,7 @@ export const MobileNav = styled.nav`
 `;
 
 export const MobileNavHamburger = styled(Button)`
-    color: white;
+    color: var(--slate-600);
     z-index: 10;
     border: none;
     background-color: transparent;
