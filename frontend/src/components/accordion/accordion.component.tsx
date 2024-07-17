@@ -1,5 +1,5 @@
 import React from 'react';
-import { MdKeyboardArrowLeft } from 'react-icons/md';
+import { MdKeyboardArrowUp } from 'react-icons/md';
 import { MdKeyboardArrowDown } from 'react-icons/md';
 
 import {
@@ -28,12 +28,12 @@ const Accordion = ({ title, children, className }: AccordionProps) => {
                     setIsOpen(!isOpen);
                 }}
             >
-                {title}
                 {isOpen ? (
-                    <MdKeyboardArrowDown size={28} />
+                    <MdKeyboardArrowDown size={24} />
                 ) : (
-                    <MdKeyboardArrowLeft size={28} />
+                    <MdKeyboardArrowUp size={24} />
                 )}
+                {title}
             </AccordionHeader>
             {isOpen && (
                 <AccordionContent className={className}>
