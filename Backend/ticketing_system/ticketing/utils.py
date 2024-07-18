@@ -4,7 +4,9 @@ from transformers import XLNetTokenizer, TFXLNetModel
 from sklearn.metrics.pairwise import cosine_similarity
 import pickle
 import joblib
-from tensorflow.keras.models import load_model
+
+#from tensorflow.keras.models import load_model
+
 import  keras
 
 # Load data from CSV
@@ -47,22 +49,6 @@ def tokenize_texts(texts, tokenizer):
 
 
 # Function to load and predict
-def load_and_predict(description, model_path, encoder_path):
-    # Load the model
-    model = load_model(model_path)
-
-    # Preprocess the input description
-    tokenized_input = tokenize_texts([description], token)
-    prediction = model.predict \
-        ({'input_ids': tokenized_input['input_ids'], 'attention_mask': tokenized_input['attention_mask']})
-
-    # Load the encoder
-    encoder = joblib.load(encoder_path)
-
-    predicted_index = np.argmax(prediction, axis=1)[0]
-    prediction = encoder.inverse_transform([predicted_index])[0]
-
-    return prediction
 
 
 # Example usage

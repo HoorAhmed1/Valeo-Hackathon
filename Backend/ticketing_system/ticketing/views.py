@@ -9,8 +9,8 @@ from rest_framework.decorators import action, api_view
 from .models import Employee, Team, Ticket
 from .serializers import EmployeeSerializer, TeamSerializer, TicketSerializer
 from .assign import assign_ticket
-from .utils import retrieve_similar_ticketsfrom 
-from .priority_check import predict_priority
+from .utils import retrieve_similar_tickets 
+
 
 class TeamViewSet(viewsets.ModelViewSet):
     queryset = Team.objects.all()
@@ -64,16 +64,3 @@ class EmployeeViewSet(viewsets.ModelViewSet):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-
-class PriorityView():
-    def get(self, request, *args, **kwargs):
-        # Get request parameters
-        priority = request.GET.get('priority', 'default_value')
-        description = request.GET.get('descroption', 'default_value')
-        
-        # Apply a function to the request parameters
-        expected_priority = predict_priority(description)
-        correctness = (expected_priority == priority)
-        # Return the result as a JSON response
-        return Response({'expected_priority': expected_priority, 'match' : correctness}, status=status.HTTP_200_OK)
-    
