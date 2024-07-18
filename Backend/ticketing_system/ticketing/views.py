@@ -9,7 +9,8 @@ from rest_framework.decorators import action, api_view
 from .models import Employee, Team, Ticket
 from .serializers import EmployeeSerializer, TeamSerializer, TicketSerializer
 from .assign import assign_ticket
-from .utils import retrieve_similar_ticketsfrom .priority_check import predict_priority
+from .utils import retrieve_similar_ticketsfrom 
+from .priority_check import predict_priority
 
 class TeamViewSet(viewsets.ModelViewSet):
     queryset = Team.objects.all()
