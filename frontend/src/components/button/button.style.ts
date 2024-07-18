@@ -76,10 +76,15 @@ export const ButtonContainer = styled.button<ButtonProps>`
                     `;
                 case 'danger':
                     return css`
-                        border-color: #c92a2a;
+                        border-width: 2px;
+                        border-color:rgba(255, 0, 0, 0);
+
                         color: #c92a2a;
                         &:hover {
                             background-color: rgba(255, 0, 0, 0.075);
+                            border-width: 2px;
+                        border-color:rgba(255, 0, 0, 0.075);
+
                         }
                     `;
                 default:
@@ -91,10 +96,7 @@ export const ButtonContainer = styled.button<ButtonProps>`
                     return css`
                         background-color: #96ADE8;
                         border-color: #96ADE8;
-                        &:hover {
-                            color: #96ADE8;
-                            background-color: #FCFBFB;
-                        }
+
                     `;
                 case 'secondary':
                     return css`

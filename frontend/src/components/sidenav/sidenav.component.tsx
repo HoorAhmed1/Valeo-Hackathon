@@ -20,19 +20,19 @@ export default function SideNav() {
      const [navItems, setNavItems] = useState<SideNavItemProps[]>([
         {
             icon: <TbLayoutBoard />,
-            path: '',
+            path: '/board',
             text: 'Board',
             id: 1,
             active:true
         },
         {
             icon: <FaTimeline />,
-            path: '/app/timeline',
+            path: '/timeline',
             text: 'Timeline',
             id: 2,
         },        {
             icon: <SiCodeblocks />,
-            path: '/app/blocklog',
+            path: '/blocklog',
             text: 'Blocklog',
             id: 3,
         },

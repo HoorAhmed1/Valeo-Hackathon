@@ -11,8 +11,9 @@ export const ItemContainer = styled(Link)<{ active?: boolean }>`
     background-color: ${({ active }) =>  active ? '#FAB9EF' : 'transparent'};
     border: 1px solid transparent;
     &:hover {
-        background-color: rgba(255, 255, 255, 0.075);
-        border-color: rgba(255, 255, 255, 0.1);
+        background-color: #FAB9EF;
+color: var(--slate-50);
+opacity:0.5;
     }
     color: ${({ active }) => active ?'#FCFBFB': 'var(--slate-400)'};
 

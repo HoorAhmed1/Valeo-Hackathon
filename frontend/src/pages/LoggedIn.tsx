@@ -2,14 +2,13 @@ import { Outlet } from 'react-router-dom';
 import styled from 'styled-components';
 
 import SideNav from '../components/sidenav/sidenav.component';
-import BoardPage from './board/board.page';
 
 export default function LoggedInTemplatePage() {
     return (
         <LoggedInTemplateContainer>
             <SideNav />
             <MainContentContainer >
-                <BoardPage />
+                <Outlet />
             </MainContentContainer>
         </LoggedInTemplateContainer>
     );

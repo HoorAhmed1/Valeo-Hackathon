@@ -33,7 +33,10 @@ const Accordion = ({ title, children, className }: AccordionProps) => {
                 ) : (
                     <MdKeyboardArrowUp size={24} />
                 )}
-                {title}
+                <span className='flex gap-6 items-center'>
+                    <h1>{title}</h1>
+                    <p className='text-sm text-[var(--slate-400)]'> (12 issues)</p>
+                </span>                
             </AccordionHeader>
             {isOpen && (
                 <AccordionContent className={className}>

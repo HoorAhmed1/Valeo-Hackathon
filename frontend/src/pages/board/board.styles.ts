@@ -10,7 +10,7 @@ export const PageContainer = styled(motion.div)`
     margin: 0;
     gap: 25px;
     @media (max-width: 1024px) {
-    min-width: 1025px;
+    min-width: 1000px;
      overflow-x: auto;
     }
 `;
@@ -106,9 +106,13 @@ h1{
 export const TasksBox =styled.div`
   border-radius:9px;
 display:flex;
-align-items: center;
-justify-content:center;
-padding:0.35rem;
+    flex-direction: column;
+    justify-content:flex-start;
+padding-right: 0.35rem;
+padding-left: 0.35rem;
+padding-top: 0.45rem;
+
 background-color: var(--gray-300);
-min-height:70vh;
+min-height:50vh;
+gap:12px;
 `
