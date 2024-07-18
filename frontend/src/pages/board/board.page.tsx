@@ -7,11 +7,37 @@ import Accordion from "../../components/accordion/accordion.component";
 import { TbGraphFilled } from "react-icons/tb";
 import { useNavigate } from "react-router-dom";
 import TicketInfo from "../../components/ticket-box/ticket-box.component";
+import { useEffect, useState } from "react";
+import TicketModal from "../../components/ticket-modal/ticket-modal.component";
+import { GetAllTicket } from "../../services/ticket.services";
+import { GetTicket } from "../../types/serialized-input";
 
 const BoardPage = () => {
     const navigate = useNavigate();
-
+    const [ticketShow, setTicketShow] = useState(false);
+    const [id, setID]= useState(0);
+    const [tickets, setTickets] = useState<GetTicket[]>();
+    const handleEdit = (ID: number) => {
+        setID(ID);
+        setTicketShow((prev) => !prev);
+    };
+    useEffect(() => {
+        let mounted = true;
+        GetAllTicket()
+            .then(data => {
+                if (mounted) {
+                    setTickets(data);
+                }
+            })
+            .catch(error => {
+                console.error("Error fetching tickets:", error);
+            });
     
+        return () => {
+            mounted = false;
+        };
+    }, []);
+
 
     return (<PageContainer>
         <NavBar>
@@ -73,15 +99,37 @@ const BoardPage = () => {
             </TasksTitleHolder>
             <Accordion title="Project 1" >
                 <TasksBox>
-                <TicketInfo
-                        Title='Task 1' Assignee={"Ahmed"} Description={"Create new chart for the timeline"} Priority={"Major"} />
-
+                    <div className="w-[100%]"
+                    onClick={() =>
+                        setTicketShow(true)}>
+                    <TicketInfo
+                        Title='Task 1' 
+                        Assignee={"Ahmed"} 
+                        Description={"Create new chart for the timeline"} 
+                        Priority={"Major"} 
+                        
+                        />
+                    </div>
+                    {tickets?.map((ticket,key) =>
+             <div className="w-[100%]"
+             onClick={() => handleEdit(key)}>
+             <TicketInfo
+                 Title={ticket.title}
+                 Assignee={ticket.assigned_to.name} 
+                 Description={ticket.description} 
+                 Priority={ticket.priority} 
+                 />
+             </div>)}
                 </TasksBox>
                 <TasksBox></TasksBox>
                 <TasksBox></TasksBox>
                 <TasksBox></TasksBox>
             </Accordion>
         </DataContainer>
+        <TicketModal
+             ticket={tickets && tickets[id]}
+            showModal={ticketShow}
+            setShowModal={setTicketShow} ID={id}/>
     </PageContainer>)
 }
 

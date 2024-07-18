@@ -8,6 +8,7 @@ import { FormContainer, PageContainer, StatusContainer, StatusIcon, StatusInput,
 import { GoDotFill } from "react-icons/go";
 import Button from "../../components/button/button.component";
 import { useNavigate } from "react-router-dom";
+import { PostCreateTicket } from "../../services/ticket.services";
 type Priority = {
     color: string;
     status: string;
@@ -17,7 +18,12 @@ const TicketCreationPage = () => {
     const [priority, setPriority] = useState('Minor');
     const [priorityColor, setPriorityColor] = useState('#008200');
     const [priorityIsRunning, setPriorityIsRunning] = useState(false);
-
+    const [title, setTitle] = useState('');
+    const [projectName, setProjectName] = useState('');
+    const [description, setDescription] = useState('');
+    const [parentTicket, setParentTicket] = useState('');
+    const [requestParticipants, setRequestParticipants] = useState('');
+    const [flag, setFlag]=useState(false);
     const priorities: Priority[] = [
         {
             color: '#ED363A',
@@ -46,27 +52,46 @@ const TicketCreationPage = () => {
             document.removeEventListener('click', handleClickOutside);
         };
     }, []);
+    const handleSubmit = (e:any) => {
+        e.preventDefault();
+        const formData = {
+            title,
+            priority,
+            description,
+        };
+        PostCreateTicket(formData)
+        .then((result)=>{
+            alert(result);
+        },
+        (error)=>{
+            alert("Failed to Add Ticket");
+        })
+        ;
+        console.log(formData);
+    };
     const navigate = useNavigate();
     return (<PageContainer>
         <PageTitle size='md' className={'text-left'} >
             Incident Request
         </PageTitle>
         <hr className="w-[100%] bg-[var(--slate-300)]" />
-        <FormContainer>
-            <div className="flex gap-4 w-[100%] justify-between ">
+        <FormContainer onSubmit={handleSubmit}>
+                        <div className="flex gap-4 w-[100%] justify-between ">
                 <CustomInput
                     required
                     label="Title"
-                    pattern="^[a-zA-Z0-9 ]{3,20}$"
-                    title="Between 3 and 20 characters long, contains letters, numbers, and spaces."
-
+                    value={title}
+                    onChange={(e: { target: { value: any } }) =>
+                        setTitle(e.target.value)}
                 />
                 <CustomInput
                     required
                     label="Project Name"
-                    pattern="^[a-zA-Z0-9 ]{3,20}$"
-                    title="Between 3 and 20 characters long, contains letters, numbers, and spaces."
+                    value={projectName}
+                    onChange={(e: { target: { value: any } }) =>
+                        setProjectName(e.target.value)}
                 />
+
             </div>
             <div className="w-full relative">
                 <StatusIcon size={24} color={priorityColor} />
@@ -103,23 +128,35 @@ const TicketCreationPage = () => {
             <div className="w-[100%]">
                 <CustomInput
                     label="Description"
-                    // value={description}
-                    // onChange={(e: { target: { value: any } }) =>
-                    //     setDescription(e.target.value)
-                    // }
+                    value={description}
+                    onChange={(e: { target: { value: any } }) =>
+                        setDescription(e.target.value)
+                    }
                     multiline="true"
                     placeholder="Enter description..."
                     maxLength={1000}
                     cols={33}
                     rows={5}
                 />
+                   <p className="w-[100%] flex justify-end items-end cursor-pointer text-xs hover:text-blue-500 text-sky-500">Check the description.</p>
+
+                {flag && 
+                <div>
+                    <p></p>
+                </div> }
             </div>
             <div className="flex gap-4 w-[100%] justify-between ">
                 <CustomInput
                     label="Parent ticket  (optional)"
+                    value={parentTicket}
+                    onChange={(e: { target: { value: any } }) =>
+                        setParentTicket(e.target.value)}
                 />
                 <CustomInput
                     label="Request participants  (optional)"
+                    value={requestParticipants}
+                    onChange={(e: { target: { value: any } }) =>
+                        setRequestParticipants(e.target.value)}
                 />
             </div>
             <div className="flex justify-end items-end gap-2 pt-8 ">

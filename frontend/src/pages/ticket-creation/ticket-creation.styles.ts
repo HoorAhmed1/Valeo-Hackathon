@@ -22,7 +22,7 @@ export const FormContainer = styled.form`
 `;
 export const StatusIcon = styled(GoDotFill)<{ color?: string }>`
     position: absolute;
-    left: 2%;
+    left: 1%;
     top: 50%;
     color: ${(props) => props.color};
 `;
@@ -38,7 +38,7 @@ const hexToRgb = (hex: string | undefined) => {
 export const StatusInput = styled(CustomInput)<{ color?: string }>`
     background-color: rgba(${(props) => hexToRgb(props.color)}, 0.2);
     font-size: 0.9rem;
-    padding-left: 50px;
+    padding-left: 36px;
 `;
 
 export const StatusContainer = styled(motion.ul)`

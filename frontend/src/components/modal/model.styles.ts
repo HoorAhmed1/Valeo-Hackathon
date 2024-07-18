@@ -25,7 +25,7 @@ export const ModalWrapper = styled(motion.div)<{ width?: 'sm' | 'md' | 'lg' }>`
             case undefined:
                 return `min(100%, 450px)`;
             case 'lg':
-                return `min(100%, 650px)`;
+                return `min(100%, 950px)`;
         }
     }};
     max-height: 95vh;

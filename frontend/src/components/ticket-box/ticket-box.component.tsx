@@ -41,7 +41,10 @@ const TicketInfo = ({
            <TicketTitle>{Title}</TicketTitle>
            <TicketText>{Description}</TicketText>
            <div className="flex w-[100%] justify-between items-center">
-           <PersonProfile src={personalImage} title={Assignee}/>
+            <div className="flex gap-2 items-center">
+            <PersonProfile src={personalImage} title={Assignee}/>
+            <h1 className="text-sm text-[var(--slate-600)]">{Assignee}</h1>
+            </div>
            <PriorityFlag 
            color= {Priority==="Blocker"?'#ED363A':Priority==='Major'?'#F8F0A7':'#008200'}/>
            </div>

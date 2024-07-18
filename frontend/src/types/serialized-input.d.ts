@@ -32,3 +32,35 @@ type customInputMandatory = {
  */
 export type SerializedCustomInput = SerializedInput &
     (customInputOptional | customInputMandatory);
+
+
+export type GetTicket={
+    id:number;
+    title:string;
+    description:string;
+    priority:string;
+    status:string;
+    assigned_to:{
+        id:number;
+        name:string;
+    };
+    reporter?:string;
+
+}
+export type SendTicket={
+    title:string;
+    description:string;
+    priority:string;
+}
+
+export type SimilarTicket={
+    title:string;
+    description:string;
+    priority:string;
+    status:string;
+    assigned_to:{
+        id:number;
+        name:string;
+    };
+
+}
