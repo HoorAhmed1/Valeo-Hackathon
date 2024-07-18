@@ -10,4 +10,7 @@ router.register(r'tickets', views.TicketViewSet)
 
 urlpatterns = [
     path('', include(router.urls)),
+    path('api/tickets/<int:pk>/similar_tickets/', views.SimilarTicketsView.as_view(), name='similar-tickets'),
+
 ]
+
