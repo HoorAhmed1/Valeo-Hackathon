@@ -39,3 +39,6 @@ class Ticket(models.Model):
     def __str__(self):
         return self.title
     
+    def get_similar_tickets(self, obj):
+        similar_tickets = obj.get_similar_tickets()
+        return [{'id': ticket.id, 'title': ticket.title} for ticket in similar_tickets]
