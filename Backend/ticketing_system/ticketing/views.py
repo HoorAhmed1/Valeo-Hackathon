@@ -18,7 +18,8 @@ class TicketViewSet(viewsets.ModelViewSet):
     
     def perform_create(self, serializer):
         ticket = serializer.save()
-        assign_ticket(ticket)
+        default_team_name = 'L1'
+        assign_ticket(ticket,default_team_name)
 
 class EmployeeViewSet(viewsets.ModelViewSet):
     queryset = Employee.objects.all()

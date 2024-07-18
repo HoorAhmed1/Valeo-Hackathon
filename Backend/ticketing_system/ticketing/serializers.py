@@ -28,10 +28,10 @@ class EmployeeSerializer(serializers.ModelSerializer):
                 
 class TicketSerializer(serializers.ModelSerializer):
     assigned_to = serializers.SerializerMethodField()
-
+    
     class Meta:
         model = Ticket
-        fields = ['id', 'title', 'description', 'priority', 'assigned_to', 'created_at', 'updated_at']
+        fields = ['id', 'title', 'description', 'priority', 'status', 'assigned_to','team', 'created_at', 'updated_at']
 
     def get_assigned_to(self, obj):
         if obj.assigned_to:
@@ -40,3 +40,21 @@ class TicketSerializer(serializers.ModelSerializer):
                 'name': obj.assigned_to.name
             }
         return None
+
+    def create(self, validated_data):
+        # Fetch the default team instance
+        try:
+            default_team_name = 'L1'
+            team_instance = Team.objects.get(name=default_team_name)
+        except Team.DoesNotExist:
+            raise serializers.ValidationError("Default team does not exist.")
+
+        validated_data['team'] = team_instance
+        ticket = Ticket.objects.create(**validated_data)
+
+        # Assign ticket dynamically to the default team
+        from .assign import assign_ticket
+        assign_ticket(ticket, default_team_name)
+
+        return ticket
+

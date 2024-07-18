@@ -26,6 +26,7 @@ class Ticket(models.Model):
         ('Open', 'Open'),
         ('Resolved', 'Resolved'),
     ]
+    team = models.ForeignKey(Team, on_delete=models.SET_NULL, null=True, blank=True, default=None) 
     id = models.AutoField(primary_key=True) 
     title = models.CharField(max_length=200)
     description = models.TextField()
@@ -37,3 +38,4 @@ class Ticket(models.Model):
 
     def __str__(self):
         return self.title
+    
