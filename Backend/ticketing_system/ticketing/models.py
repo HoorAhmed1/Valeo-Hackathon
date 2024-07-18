@@ -22,10 +22,15 @@ class Ticket(models.Model):
         ('Major', 'Major'),
         ('Minor', 'Minor'),
     ]
+    STATUS_CHOICES = [
+        ('Open', 'Open'),
+        ('Resolved', 'Resolved'),
+    ]
     id = models.AutoField(primary_key=True) 
     title = models.CharField(max_length=200)
     description = models.TextField()
     priority = models.CharField(max_length=10, choices=PRIORITY_CHOICES, default='Minor')
+    status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='Open')
     assigned_to = models.ForeignKey(Employee, on_delete=models.SET_NULL, null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
