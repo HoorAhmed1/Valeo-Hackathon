@@ -1,0 +1,22 @@
+Blocker
+
+Issue starting CASTLE to Execute ML4, seems CRE opened and stucked. so need to be closed
+
+jenkins is offline, machine is online
+
+
+we have restarted the machine after some updates and need to be reconnected back online again
+
+machine is offline on Jenkins
+
+
+Major
+pipeline failure due to an issue in the criteria file
+
+Cleaning issue caused a pipeline failure
+
+
+Minor 
+The test cases are not appearing in the ML4 stage
+
+Matlab issue
