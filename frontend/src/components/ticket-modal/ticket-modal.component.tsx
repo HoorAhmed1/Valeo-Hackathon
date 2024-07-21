@@ -7,8 +7,10 @@ import personalImage from "../../assets/user.jpg"
 import { GoDotFill } from "react-icons/go";
 import { StatusIcon, StatusInput, StatusContainer, StatusItem } from "../../pages/ticket-creation/ticket-creation.styles";
 import Button from "../button/button.component";
-import { GetTicket } from "../../types/serialized-input";
+import { GetTicket,SimilarTicket } from "../../types/serialized-input";
 import { GetSimilarTicket } from "../../services/ticket.services";
+import { successToast } from "../../utils/toasts";
+import moment from "moment";
 
 interface ModalProps {
     ID: number;
@@ -34,25 +36,31 @@ const TicketModal: React.FC<ModalProps> = ({
     const [title, setTitle] = useState('');
     const [projectName, setProjectName] = useState('');
     const [description, setDescription] = useState('');
-    const [tickets, setTickets] = useState<GetTicket[]>();
-
+    const [tickets, setTickets] = useState<SimilarTicket[]>();
+    console.log(ticket);
+    useEffect(()=>{
+        setPriority(ticket?.priority);
+        setPriorityColor(ticket?.priority==='Blocker'?'#ED363A':ticket?.priority==='Major'?'#F8F0A7':'#008200');
+        setTitle(ticket?.title||'');
+        setDescription(ticket?.description||'')
+    },[ticket]);
     useEffect(() => {
         let mounted = true;
         GetSimilarTicket(ID)
             .then(data => {
                 if (mounted) {
                     setTickets(data);
+                    console.log(data);
                 }
             })
             .catch(error => {
                 console.error("Error fetching similar tickets:", error);
             });
-    
+
         return () => {
             mounted = false;
         };
     }, []);
-
     const priorities: Priority[] = [
         {
             color: '#ED363A',
@@ -86,6 +94,7 @@ const TicketModal: React.FC<ModalProps> = ({
         },
     ];
     useEffect(() => {
+           console.log("hh")
         const handleClickOutside = (event: any) => {
             const customInputForm =
                 document.querySelector('.custom-input-form');
@@ -104,15 +113,19 @@ const TicketModal: React.FC<ModalProps> = ({
             document.removeEventListener('click', handleClickOutside);
         };
     }, []);
-    const handleSubmit = (e: any) => {
-        e.preventDefault();
-        const formData = {
-            title,
-            projectName,
-            priority,
-            description,
-        };
-        console.log(formData);
+    const handleCheck = (e: any) => {
+        GetSimilarTicket(ID)
+        .then(data => {
+           
+                setTickets(data);
+                successToast("Checked similar tickets successfully");
+                console.log(data);
+
+        })
+        .catch(error => {
+            console.error("Error fetching similar tickets:", error);
+        });
+
     };
     return (<Modal
         title="Ticket Details"
@@ -121,20 +134,18 @@ const TicketModal: React.FC<ModalProps> = ({
         <TicketHolder>
             <FormHolder>
                 <div className="flex gap-4 w-[100%] pb-2">
-                    <span className="flex gap-2 items-center">
+                    <span className="flex gap-2 items-center pr-12">
                         <Label>Title:</Label>
                         <h1 className="text-md text-[var(--slate-600)]">Project</h1>
                     </span>
-                    <span className="flex gap-2 items-center ">
+                    <span className="flex  items-center ">
                         <Label>Project Name:</Label>
                     </span>
-                    <h1 className="text-md text-[var(--slate-600)] ">{ ticket?.title || "Computer Project"}</h1>
+                    <h1 className="text-md text-[var(--slate-600)] ">{ title+' ('+ID+')'}</h1>
                 </div>
                 <span className="flex gap-2 items-start flex-col pb-2">
                     <Label>Description:</Label>
-                    <h1 className="text-md text-[var(--slate-600)]">{ticket?.description||
-                    "The error message “Target container is not a DOM element” typically occurs when React tries to render a component into a container that doesn’t exist or isn’t correctly referenced in the DOM."}
-                      </h1>
+                    <h1 className="text-md text-[var(--slate-600)]">{description} </h1>
                 </span>
                 <div className="flex gap-4 w-[100%] justify-between ">
                 <div className="w-full relative">
@@ -171,13 +182,26 @@ const TicketModal: React.FC<ModalProps> = ({
             </div>
                 </div>
                 <span className="flex gap-2 items-start flex-col pb-2 pt-[10px]">
+                    <div className="flex w-[100%] justify-between">
                     <Label>Suggested Related Ticket IDs:</Label>
-                        {tickets?
-                                      tickets.map((ticket) =>
-                                        <span className="bg-[var(--slate-50)] text-[var(--slate-500)] font-bold rounded-full flex items-center px-2 py-1 text-xs">
-                                      {"Ticket "+ticket.id} 
-                                  </span>
-                                    )       :  
+                    <p className="text-sky-500 text-xs cursor-pointer text-xs hover:text-blue-500 text-sky-500 w-[25%] " onClick={handleCheck}>Check similarities?</p>
+                    </div>
+                        {(tickets && (tickets.length>0))?
+                        <div className="flex flex-col gap-2 border-[var(--slate-200)] rounded-sm w-[100%] overflow-y-auto h-[160px]">
+                                      {tickets.map((ticket) =>
+                                        <div className="flex flex-col gap-2 p-2 w-[100%]">
+                                        <span className="flex justify-between items-center">
+                                        <h1 className="text-[var(--slate-800)] text-sm font-bold ">{"Ticket ID: "+ticket.Issue_key} </h1>
+                                        <p className="text-[var(--slate-600)] text-xs">Created at {moment(ticket.Created_at).format("MMM Do YY")}</p>
+                                        </span>
+                                        <hr className="bg-[var(--slate-300)] h-[2px]"/>
+                                          <span className="flex gap-2">
+                                        <h1 className="text-[var(--slate-800)] text-sm font-bold">Description:</h1>
+                                        <p className="text-[var(--slate-600)] text-sm">{' '+ticket.Description}</p>
+                                        </span>
+                                  </div>
+                                    ) }
+                                    </div> :  
                             <h1 className="text-md text-[var(--slate-600)]">  No similar tickets found.</h1>
                     }
                 </span>
@@ -193,7 +217,7 @@ const TicketModal: React.FC<ModalProps> = ({
                     <Label>Assignee:</Label>
                     <div className="flex gap-2 items-center justify-center">
                     <PersonProfile src={personalImage} alt="personal image" />
-                    <h1 className="text-md text-[var(--slate-700)]">{ticket?.assigned_to.name || "Ahmed Hany"}</h1>
+                    <h1 className="text-md text-[var(--slate-700)]">{ticket?.assigned_to?.name || "Ahmed Hany"}</h1>
                     </div>
                     <p className="w-[100%] flex justify-end items-end cursor-pointer text-xs hover:text-blue-500 text-sky-500">Change the assignee.</p>
                 </span>

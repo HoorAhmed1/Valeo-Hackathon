@@ -1,6 +1,6 @@
 import pandas as pd
 import numpy as np
-from transformers import XLNetTokenizer, pipeline, XLNetModel
+from transformers import XLNetTokenizer, XLNetModel
 from sklearn.metrics.pairwise import cosine_similarity
 from tensorflow.python.keras.models import load_model
 import torch
@@ -37,8 +37,9 @@ def retrieve_similar_tickets(new_description, embeddings_path='ticketing/embeddi
 
     similar_indices = cosine_similarities.argsort()[-top_n:][::-1]
     similar_issues = data.iloc[similar_indices]
+    dic_list = [{'Issue_key' : row['Issue key'], 'Description': row['Description'],'Created_at':row['Created']} for _,row in similar_issues.iterrows()]
 
-    return similar_issues.index.astype(int).tolist()
+    return dic_list
 
 # Tokenize the data
 def tokenize_texts(texts, tokenizer):

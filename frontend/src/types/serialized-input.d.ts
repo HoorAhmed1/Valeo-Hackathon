@@ -45,6 +45,7 @@ export type GetTicket={
         name:string;
     };
     reporter?:string;
+    created_at:Date;
 
 }
 export type SendTicket={
@@ -52,15 +53,18 @@ export type SendTicket={
     description:string;
     priority:string;
 }
-
-export type SimilarTicket={
-    title:string;
+export type PriorityTicket={
     description:string;
     priority:string;
-    status:string;
-    assigned_to:{
-        id:number;
-        name:string;
-    };
+}
+export type ResponsePriorityTicket={
+    expected_priority:string;
+    match:boolean;
+}
 
+
+export type SimilarTicket={
+    Issue_key:string;
+    Description:string;
+    Created_at:Date;
 }

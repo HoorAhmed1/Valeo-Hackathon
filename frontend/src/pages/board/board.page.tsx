@@ -99,27 +99,16 @@ const BoardPage = () => {
             </TasksTitleHolder>
             <Accordion title="Project 1" >
                 <TasksBox>
-                    <div className="w-[100%]"
-                    onClick={() =>
-                        setTicketShow(true)}>
-                    <TicketInfo
-                        Title='Task 1' 
-                        Assignee={"Ahmed"} 
-                        Description={"Create new chart for the timeline"} 
-                        Priority={"Major"} 
-                        
-                        />
-                    </div>
                     {tickets?.map((ticket,key) =>
-             <div className="w-[100%]"
+             {  return(<div className="w-[100%]"
              onClick={() => handleEdit(key)}>
              <TicketInfo
                  Title={ticket.title}
-                 Assignee={ticket.assigned_to.name} 
+                 Assignee={ticket.assigned_to} 
                  Description={ticket.description} 
                  Priority={ticket.priority} 
                  />
-             </div>)}
+             </div>)})}
                 </TasksBox>
                 <TasksBox></TasksBox>
                 <TasksBox></TasksBox>
@@ -129,7 +118,7 @@ const BoardPage = () => {
         <TicketModal
              ticket={tickets && tickets[id]}
             showModal={ticketShow}
-            setShowModal={setTicketShow} ID={id}/>
+            setShowModal={setTicketShow} ID={(tickets && tickets[id].id)||0}/>
     </PageContainer>)
 }
 

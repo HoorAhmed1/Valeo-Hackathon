@@ -4,7 +4,7 @@ import { assign } from "lodash";
 
 type TicketInfoProps = {
     TicketId?: string;
-    Assignee: string;
+    Assignee: {id:number; name:string;};
     Reporter?: string;
     Description: string;
     Status?: string;
@@ -42,8 +42,8 @@ const TicketInfo = ({
            <TicketText>{Description}</TicketText>
            <div className="flex w-[100%] justify-between items-center">
             <div className="flex gap-2 items-center">
-            <PersonProfile src={personalImage} title={Assignee}/>
-            <h1 className="text-sm text-[var(--slate-600)]">{Assignee}</h1>
+            <PersonProfile src={personalImage} />
+            <h1 className="text-sm text-[var(--slate-600)]">{Assignee?.name||"JJJ"}</h1>
             </div>
            <PriorityFlag 
            color= {Priority==="Blocker"?'#ED363A':Priority==='Major'?'#F8F0A7':'#008200'}/>

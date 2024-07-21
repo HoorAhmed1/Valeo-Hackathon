@@ -8,7 +8,9 @@ import { FormContainer, PageContainer, StatusContainer, StatusIcon, StatusInput,
 import { GoDotFill } from "react-icons/go";
 import Button from "../../components/button/button.component";
 import { useNavigate } from "react-router-dom";
-import { PostCreateTicket } from "../../services/ticket.services";
+import { PostCreateTicket, PostPriorityCheck } from "../../services/ticket.services";
+import { errorToast, successToast, warningToast } from '../../utils/toasts';
+
 type Priority = {
     color: string;
     status: string;
@@ -52,6 +54,8 @@ const TicketCreationPage = () => {
             document.removeEventListener('click', handleClickOutside);
         };
     }, []);
+    const navigate = useNavigate();
+
     const handleSubmit = (e:any) => {
         e.preventDefault();
         const formData = {
@@ -61,15 +65,37 @@ const TicketCreationPage = () => {
         };
         PostCreateTicket(formData)
         .then((result)=>{
-            alert(result);
+            successToast("The ticket is created successfully!!");
         },
         (error)=>{
-            alert("Failed to Add Ticket");
+            errorToast("Failed to Add Ticket");
         })
         ;
         console.log(formData);
+        navigate('/board');
     };
-    const navigate = useNavigate();
+
+    const handlePriority = (e:any) => {
+        e.preventDefault();
+        const formData = {
+            priority,
+            description,
+        };
+        PostPriorityCheck(formData)
+        .then((result)=>{
+            console.log(result.expected_priority)
+            if(result.match)
+                 successToast("No problem");
+            else
+               warningToast(`Your assigned priority doesn't match the description. It should be ${result.expected_priority}.`);
+
+        },
+        (error)=>{
+            errorToast("Failed to check description");
+        })
+        ;
+
+    };
     return (<PageContainer>
         <PageTitle size='md' className={'text-left'} >
             Incident Request
@@ -138,10 +164,10 @@ const TicketCreationPage = () => {
                     cols={33}
                     rows={5}
                 />
-                   <p className="w-[100%] flex justify-end items-end cursor-pointer text-xs hover:text-blue-500 text-sky-500">Check the description.</p>
+                   <p className="w-[100%] flex pt-4 justify-end items-end cursor-pointer text-xs hover:text-blue-500 text-sky-500" onClick={handlePriority}>Check the description.</p>
 
                 {flag && 
-                <div>
+                <div className="w-[100%] flex pt-4 justify-end items-end text-sm  text-red-700">
                     <p></p>
                 </div> }
             </div>
@@ -169,6 +195,7 @@ const TicketCreationPage = () => {
                 </Button>
                 <Button
                     className="w-1/7 "
+                    onClick={handleSubmit}
                 >Create</Button>
             </div>
         </FormContainer>
